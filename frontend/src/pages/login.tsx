@@ -1,7 +1,7 @@
 // src/pages/login.tsx
 import { useRouter } from 'next/router';
 import api from '../utils/api';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/LoginForm/LoginForm';
 
 export default function LoginPage() {
   const router = useRouter();

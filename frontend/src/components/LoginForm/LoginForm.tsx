@@ -1,18 +1,20 @@
-// src/components/auth/LoginForm.tsx
 import { useState } from 'react';
+import './LoginForm.css';
 
 export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: string; password: string }) => void }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
+    <div className="login-container">
     <form
+      className="login-form"
       onSubmit={e => {
         e.preventDefault();
         onSubmit({ email, password });
       }}
     >
-      <h1>Log In</h1>
+      <h2>Tennis Court Booking</h2>
       <input
         type="email"
         placeholder="Email"
@@ -29,5 +31,6 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
       />
       <button type="submit">Log In</button>
     </form>
+    </div>
   );
 }
