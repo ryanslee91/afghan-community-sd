@@ -12,7 +12,8 @@ export class UserService {
         id: true,
         email: true,
         nickname: true,
-        createdAt: true,
+        createdAt: false,
+        role: true,
       },
     });
   }

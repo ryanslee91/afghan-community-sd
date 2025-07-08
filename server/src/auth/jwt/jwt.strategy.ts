@@ -7,6 +7,8 @@ import { PrismaService } from 'prisma/prisma.service';
 
 // Request에서 토큰을 뽑아내는 함수에 타입 지정
 const cookieExtractor = (req: Request): string | null => {
+  console.log('🍪 req.cookies =', req.cookies);
+
   const cookies = req.cookies as Record<string, string> | undefined;
   return cookies?.['access_token'] ?? null;
 };

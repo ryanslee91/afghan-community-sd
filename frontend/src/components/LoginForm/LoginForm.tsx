@@ -17,7 +17,7 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
         onSubmit({ email, password });
       }}
     >
-      <h2>Gamers from Neighborhood</h2>
+      <h2>Neighborhood Gamers</h2>
       <input
         type="email"
         placeholder="Email"
@@ -32,9 +32,8 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
         onChange={e => setPassword(e.target.value)}
         required
       />
-      <button type="submit">Log In</button>
-    </form>
-      <div className="guest-button-wrapper">
+      <button className="log-in-button" type="submit">Log In</button>
+            <div className="guest-button-wrapper">
         <button
           className="guest-button"
           onClick={() => router.push('/dashboard')}
@@ -42,6 +41,7 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
           Continue as a guest
         </button>
       </div>
+    </form>
     </div>
   );
 }
