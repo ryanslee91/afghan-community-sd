@@ -1,4 +1,3 @@
-// src/pages/login.tsx
 import { useRouter } from 'next/router';
 import api from '../utils/api';
 import LoginForm from '../components/LoginForm/LoginForm';
