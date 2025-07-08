@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import './LoginForm.css';
+import { useRouter } from 'next/router';
 
 export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: string; password: string }) => void }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   return (
     <div className="login-container">
@@ -32,6 +34,14 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
       />
       <button type="submit">Log In</button>
     </form>
+      <div className="guest-button-wrapper">
+        <button
+          className="guest-button"
+          onClick={() => router.push('/dashboard')}
+        >
+          Continue as a guest
+        </button>
+      </div>
     </div>
   );
 }
