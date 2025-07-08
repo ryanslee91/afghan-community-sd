@@ -14,7 +14,7 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
         onSubmit({ email, password });
       }}
     >
-      <h2>Tennis Court Booking</h2>
+      <h2>Gamers from Neighborhood</h2>
       <input
         type="email"
         placeholder="Email"
