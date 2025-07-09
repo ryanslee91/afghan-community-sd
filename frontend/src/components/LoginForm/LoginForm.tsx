@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import './LoginForm.css';
 import { useRouter } from 'next/router';
@@ -7,6 +6,16 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+
+  const continueAsGuest = () => {
+    // 1. 포커스 해제
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    // 2. 페이지 이동
+    router.push('/dashboard');
+  };
+
 
   return (
     <div className="login-container">
@@ -36,7 +45,8 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
             <div className="guest-button-wrapper">
         <button
           className="guest-button"
-          onClick={() => router.push('/dashboard')}
+          type="button"
+          onClick={continueAsGuest}
         >
           Continue as a guest
         </button>

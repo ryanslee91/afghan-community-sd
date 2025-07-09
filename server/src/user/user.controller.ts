@@ -1,4 +1,3 @@
-// src/user/user.controller.ts
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
@@ -18,7 +17,7 @@ export class UserController {
     }
 
     const user = await this.userService.findById(req.user?.id);
-    console.log('hey ryan', user);
+    console.log('hey ryan', req.user, user);
     return user;
   }
 }
