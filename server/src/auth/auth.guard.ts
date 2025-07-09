@@ -19,8 +19,6 @@ export class OptionalAuthGuard extends AuthGuard('jwt') {
     context: ExecutionContext,
     status?: any,
   ): TUser | null {
-    // 에러면 throw, 유저가 없으면 null, 있으면 user
-    console.log('optional guard reached');
     if (err) throw err;
     return user ?? null;
   }
