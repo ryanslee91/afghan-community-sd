@@ -1,9 +1,27 @@
+import { User } from '@/types/User';
 import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'http://localhost:3001', // NestJS 백엔드 주소
   withCredentials: true,           // 쿠키 전송 허용 (CORS 설정 연계됨)
 });
+
+export async function getCurrentUser(): Promise<User | null> {
+  const res = await api.get<User | null>('/user/me');
+  return res.data;
+}
+
+export async function login(
+  email: string,
+  password: string
+): Promise<void> {
+  await api.post('/auth/login', { email, password });
+}
+
+export async function logout(): Promise<void> {
+  await api.post('/auth/logout');
+}
+
 
 // // 요청 인터셉터 (필요 시 Authorization 헤더 등 추가 가능)
 // api.interceptors.request.use(

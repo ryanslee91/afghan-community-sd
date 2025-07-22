@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './LoginForm.css';
+import styles from './LoginForm.module.css';
 import { useRouter } from 'next/router';
 
 export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: string; password: string }) => void }) {
@@ -18,15 +18,15 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
 
 
   return (
-    <div className="login-container">
+    <div className={styles.loginContainer}>
     <form
-      className="login-form"
+      className={styles.loginForm}
       onSubmit={e => {
         e.preventDefault();
         onSubmit({ email, password });
       }}
     >
-      <h2>Neighborhood Gamers</h2>
+      <h2>Tennis Court Booking</h2>
       <input
         type="email"
         placeholder="Email"
@@ -41,10 +41,10 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
         onChange={e => setPassword(e.target.value)}
         required
       />
-      <button className="log-in-button" type="submit">Log In</button>
-            <div className="guest-button-wrapper">
+      <button className={styles.logInButton} type="submit">Log In</button>
+            <div className={styles.guestButtonWrapper}>
         <button
-          className="guest-button"
+          className={styles.guestButton}
           type="button"
           onClick={continueAsGuest}
         >
