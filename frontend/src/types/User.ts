@@ -4,3 +4,7 @@ export interface User {
   nickname?: string;
   role?: string;
 }
+
+export interface AuthState {
+  user: User | null;
+}

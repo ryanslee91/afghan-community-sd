@@ -18,18 +18,9 @@ export async function login(
   await api.post('/auth/login', { email, password });
 }
 
-// frontend/utils/api.ts
-
 export async function logout() {
-  const res = await fetch('/auth/logout', {
-    method: 'POST',
-    credentials: 'include',
-  });
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({}));
-    throw new Error(error.message || 'Logout failed');
-  }
-  return res.json();
+  const res = await api.post('/auth/logout');
+  return res.data;
 }
 
 

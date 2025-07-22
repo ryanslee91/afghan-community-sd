@@ -1,24 +1,18 @@
-import { useEffect, useState } from 'react';
-import api from '../utils/api';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { User } from '@/types/User';
 import Logout from '@/components/Logout/Logout';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 export default function Dashboard() {
-  const [user, setUser] = useState<User | null | undefined>(undefined);
   const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    api.get<User | null>('/user/me')
-      .then(res => {
-        if (!res.data || typeof res.data !== 'object') {
-          setUser(null)
-        } else {
-          setUser(res.data)          
-        }
-  })   // logged-in user
-      .catch(() => setUser(null));      // guest user
-  }, []);
+    if (user === null) {
+      router.replace('/login');
+    }
+  }, [user, router]);
 
   return (
   <div>
