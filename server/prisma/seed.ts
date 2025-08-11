@@ -12,6 +12,7 @@ void (async () => {
         hashedPassword: hashed,
         nickname: 'test user2',
         role: 'USER',
+        languages: ['Dari', 'English'],
       },
     });
     console.log('✅ Test user created!');

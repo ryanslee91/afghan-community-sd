@@ -13,11 +13,19 @@ model User {
     hashedPassword  String
     nickname        String
     role            Role @default(USER)
+    languages       Language[]
     createdAt       DateTime @default(now())
 }
 
 enum Role {
   USER
   GUEST
+  MENTOR
   ADMIN
+}
+
+enum Language {
+  DARI
+  PASHTO
+  ENGLISH
 }

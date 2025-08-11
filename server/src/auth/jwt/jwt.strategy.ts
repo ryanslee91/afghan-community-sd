@@ -27,6 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: { sub: number; email: string }) {
+    // making sure that data should at least follow how AuthUser is formatted to prevent runtime error
     if (typeof payload.sub !== 'number' || typeof payload.email !== 'string') {
       throw new UnauthorizedException('Invalid token payload');
     }
