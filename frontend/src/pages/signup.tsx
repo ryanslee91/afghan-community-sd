@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 export default function SignUpPage() {
   const router = useRouter()
 
-  // 회원가입 성공 후 로그인 페이지로 이동
   const handleSuccess = () => {
     router.push('/login')
   }

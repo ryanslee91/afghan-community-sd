@@ -46,7 +46,7 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
        <div className={styles.signUpPrompt}>
           Do not have an account?{' '}
           <Link href="/signup" className={styles.signUpLink}>
-            Sign up now!
+            Sign up here
           </Link>
         </div>
 
