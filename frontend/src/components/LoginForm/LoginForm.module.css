@@ -63,3 +63,15 @@
 .guestButton:hover {
   color: #333;
 }
+
+.signUpPrompt {
+  margin: 12px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.signUpLink {
+  color: #0070f3;
+  text-decoration: underline;
+  cursor: pointer;
+}

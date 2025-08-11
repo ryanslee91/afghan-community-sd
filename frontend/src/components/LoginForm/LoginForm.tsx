@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './LoginForm.module.css';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: string; password: string }) => void }) {
   const [email, setEmail] = useState('');
@@ -42,6 +43,13 @@ export default function LoginForm({ onSubmit }: { onSubmit: (data: { email: stri
         required
       />
       <button className={styles.logInButton} type="submit">Log In</button>
+       <div className={styles.signUpPrompt}>
+          Do not have an account?{' '}
+          <Link href="/signup" className={styles.signUpLink}>
+            Sign up now!
+          </Link>
+        </div>
+
             <div className={styles.guestButtonWrapper}>
         <button
           className={styles.guestButton}
