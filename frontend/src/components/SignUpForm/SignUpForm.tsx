@@ -13,6 +13,7 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
   const [form, setForm] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
     nickname: '',
     languages: [] as Language[],
   })
@@ -36,6 +37,11 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    if (form.password !== form.confirmPassword) {
+      setError('Passwords do not match.')
+      return
+    }
+
     if (!form.email.trim()) {
         alert('You are missing an e-mail!');
         return;
@@ -86,6 +92,17 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
         required
       />
       </label>
+     <label className={styles.inputGroup}>
+      <span>Confirm Password: </span>
+      <input
+        name="confirmPassword"
+        type="password"
+        value={form.confirmPassword}
+        onChange={handleChange}
+        placeholder="Confirm Password"
+        required
+      />
+      </label>
       <label className={styles.inputGroup}>
       <span>Nickname: </span>
       <input
@@ -117,7 +134,8 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
           !form.email.trim() ||
           !form.password ||
           !form.nickname.trim() ||
-          form.languages.length === 0
+          form.languages.length === 0 ||
+          form.password !== form.confirmPassword
         }
       >
         Sign Up
