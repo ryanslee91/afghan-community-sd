@@ -14,6 +14,7 @@ export class UserService {
         nickname: true,
         createdAt: false,
         role: true,
+        languages: true,
       },
     });
   }
