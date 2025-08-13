@@ -11,8 +11,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, plain: string): Promise<User> {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+  async validateUser(email: string, plain: string): Promise<User | null> {
+    const user: User | null = await this.prisma.user.findUnique({
+      where: { email },
+    });
     if (!user || !user?.hashedPassword)
       throw new UnauthorizedException('Email or Password error');
 

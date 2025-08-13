@@ -14,7 +14,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const user = await this.authService.validateUser(email, password);
-    const token = await this.authService.login(user);
+    const token = await this.authService.login(user!);
 
     // JWT 쿠키에 담기 (httpOnly 옵션 필수!)
     try {
@@ -28,6 +28,7 @@ export class AuthController {
       return { message: 'Login Success' };
     } catch (e) {
       console.error('There is an error with log in procedure', e);
+      throw e;
     }
   }
 

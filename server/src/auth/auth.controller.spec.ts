@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Response } from 'express';
 import { Language, Role } from '@prisma/client';
 
@@ -21,6 +21,16 @@ class MockJwtAuthGuard {
     return true;
   }
 }
+const fakeUser = {
+  id: 1,
+  email: 'test@example.com',
+  hashedPassword: 'hashed-password',
+  nickname: 'tester',
+  role: Role.USER,
+  languages: [Language.ENGLISH],
+  createdAt: new Date(),
+};
+const fakeToken = 'jwt.token.string';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -49,17 +59,6 @@ describe('AuthController', () => {
 
   describe('login', () => {
     it('JWT 쿠키를 설정하고 성공 메시지를 반환해야 함', async () => {
-      const fakeUser = {
-        id: 1,
-        email: 'test@example.com',
-        hashedPassword: 'hashed-password',
-        nickname: 'tester',
-        role: Role.USER,
-        languages: [Language.ENGLISH],
-        createdAt: new Date(),
-      };
-      const fakeToken = 'jwt.token.string';
-
       authService.validateUser.mockResolvedValue(fakeUser);
       authService.login.mockResolvedValue(fakeToken);
 
@@ -71,13 +70,8 @@ describe('AuthController', () => {
         .spyOn(authService, 'validateUser')
         .mockResolvedValue(fakeUser);
       expect(validateUser).toHaveBeenCalledWith(
-        1,
         'test@example.com',
         'password123',
-        'tester',
-        'USER',
-        'ENGLISH',
-        '2025-01-01',
       );
       const login = jest
         .spyOn(authService, 'login')
@@ -90,6 +84,37 @@ describe('AuthController', () => {
       );
       expect(result).toEqual({ message: 'Login Success' });
     });
+
+    it('실패: JWT 발급 실패 시 예외 반환', async () => {
+      jest.spyOn(authService, 'validateUser').mockResolvedValue(fakeUser);
+      jest
+        .spyOn(authService, 'login')
+        .mockRejectedValue(new Error('JWT signing failed'));
+
+      await expect(
+        controller.login(
+          { email: fakeUser.email, password: 'password123' },
+          res as Response,
+        ),
+      ).rejects.toThrow('JWT signing failed');
+
+      expect(res.cookie).not.toHaveBeenCalled();
+    });
+
+    it('쿠키 설정 중 에러 발생 시 예외 처리', async () => {
+      jest.spyOn(authService, 'validateUser').mockResolvedValue(fakeUser);
+      jest.spyOn(authService, 'login').mockResolvedValue('jwt.token.string');
+      (res.cookie as jest.Mock).mockImplementation(() => {
+        throw new Error('Set-Cookie failed');
+      });
+
+      await expect(
+        controller.login(
+          { email: fakeUser.email, password: 'password123' },
+          res as Response,
+        ),
+      ).rejects.toThrow('Set-Cookie failed');
+    });
   });
 
   describe('logout', () => {
@@ -101,6 +126,39 @@ describe('AuthController', () => {
         expect.objectContaining({ httpOnly: true }),
       );
       expect(result).toEqual({ success: true });
+    });
+
+    it('쿠키가 없어도 동일 동작', () => {
+      (res.clearCookie as jest.Mock).mockImplementation(() => {}); // noop
+      const result = controller.logout(res as Response, {} as any);
+
+      expect(res.clearCookie).toHaveBeenCalled();
+      expect(result).toEqual({ success: true });
+    });
+
+    describe('invalid user', () => {
+      it('유효하지 않은 사용자면 UnauthorizedException 발생', async () => {
+        const validateSpy = jest
+          .spyOn(authService, 'validateUser')
+          .mockRejectedValue(
+            new UnauthorizedException('Email or Password error'),
+          );
+        const loginSpy = jest.spyOn(authService, 'login');
+
+        await expect(
+          controller.login(
+            { email: 'wrong@example.com', password: 'wrongpass' },
+            res as Response,
+          ),
+        ).rejects.toThrow(UnauthorizedException);
+
+        expect(validateSpy).toHaveBeenCalledWith(
+          'wrong@example.com',
+          'wrongpass',
+        );
+        expect(loginSpy).not.toHaveBeenCalled();
+        expect(res.cookie).not.toHaveBeenCalled();
+      });
     });
   });
 });
