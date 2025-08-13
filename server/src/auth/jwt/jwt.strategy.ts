@@ -3,14 +3,28 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 
 // Request에서 토큰을 뽑아내는 함수에 타입 지정
 const cookieExtractor = (req: Request): string | null => {
-  console.log('req.cookies =', req.cookies);
+  // 디버깅 로그
+  console.log('req.cookies =', req.cookies, 'raw header =', req.headers.cookie);
 
+  // 1) cookie-parser가 있으면 여기서 바로 읽기
   const cookies = req.cookies as Record<string, string> | undefined;
-  return cookies?.['access_token'] ?? null;
+  if (cookies?.['access_token']) {
+    return cookies['access_token'];
+  }
+
+  // 2) cookie-parser가 없거나 undefined면 raw header 문자열에서 직접 추출
+  const rawCookie = req.headers?.cookie;
+  if (!rawCookie) {
+    return null;
+  }
+
+  // access_token=... 패턴 찾기
+  const match = rawCookie.match(/(?:^|;\s*)access_token=([^;]+)/);
+  return match ? match[1] : null;
 };
 
 @Injectable()
