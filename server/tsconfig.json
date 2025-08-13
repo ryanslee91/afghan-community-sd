@@ -20,6 +20,10 @@
     "strict": true,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "types": ["node", "express", "passport-jwt"]
+    "types": ["node", "express", "passport-jwt", "jest"],
+    "paths": {
+      "prisma/*": ["prisma/*"]
+    }
+
   }
 }

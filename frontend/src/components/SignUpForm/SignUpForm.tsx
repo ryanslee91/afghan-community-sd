@@ -69,8 +69,12 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
 
   return (
     <div className={styles.container}>
-    <form onSubmit={handleSubmit}>
-      {error && <p className="error">{error}</p>}
+    <form 
+      onSubmit={handleSubmit}
+      role="form"
+      data-testid="signup-form"
+    >
+      {error && <p role="alert" className="error">{error}</p>}
       <label className={styles.inputGroup}>
       <span>Email: </span>
       <input
