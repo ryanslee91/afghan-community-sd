@@ -1,21 +1,25 @@
-export interface AuthUser {
-  id: number;
-  email: string;
-  role: Role;
-  nickname?: string;
-  createdAt?: Date;
-  languages: Languages[];
-}
+import { User as PrismaUser } from '@prisma/client';
 
-export enum Role {
-  USER,
-  GUEST,
-  MENTOR,
-  ADMIN,
-}
+export type AuthUser = Omit<PrismaUser, 'hashedPassword'>;
 
-export enum Languages {
-  DARI,
-  PASHTO,
-  ENGLISH,
-}
+// export interface AuthUser {
+//   id: number;
+//   email: string;
+//   role: Role;
+//   nickname: string;
+//   createdAt?: Date;
+//   languages: Languages[];
+// }
+
+// export enum Role {
+//   USER,
+//   GUEST,
+//   MENTOR,
+//   ADMIN,
+// }
+
+// export enum Languages {
+//   DARI,
+//   PASHTO,
+//   ENGLISH,
+// }

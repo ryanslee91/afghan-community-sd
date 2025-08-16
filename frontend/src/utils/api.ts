@@ -1,3 +1,4 @@
+import { SignUpDto } from '@/types/SIgnUp';
 import { User } from '@/types/User';
 import axios from 'axios';
 
@@ -20,6 +21,11 @@ export async function login(
 
 export async function logout() {
   const res = await api.post('/auth/logout');
+  return res.data;
+}
+
+export async function signup(dto: SignUpDto): Promise<User> {
+  const res = await api.post<User>('/auth/signup', dto);
   return res.data;
 }
 

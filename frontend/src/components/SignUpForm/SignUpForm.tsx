@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import api from '@/utils/api';
 import { Language, LANGUAGES } from '@/types/Languages';
 import axios from 'axios';
 import styles from './SignUpForm.module.css';
 import Link from 'next/link';
+import { signup } from '@/utils/api';
 
 interface SignUpFormProps {
   onSuccess?: () => void
@@ -58,7 +58,7 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
     }
 
     try {
-      await api.post('/auth/sign-up', form)
+      await signup(form);
       onSuccess?.()
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {

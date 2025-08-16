@@ -1,8 +1,19 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
+import { SignUpDto } from './dto/signup.dto';
+import { AuthUser } from 'src/user/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -42,5 +53,11 @@ export class AuthController {
       path: '/',
     });
     return { success: true };
+  }
+
+  @Post('signup')
+  @HttpCode(HttpStatus.CREATED)
+  async signup(@Body() dto: SignUpDto): Promise<AuthUser> {
+    return this.authService.signup(dto);
   }
 }

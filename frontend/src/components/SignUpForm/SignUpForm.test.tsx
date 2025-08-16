@@ -93,7 +93,7 @@ describe('SignUpForm', () => {
 
     await waitFor(() => {
       // api.post가 올바른 endpoint + payload로 호출됐는지 검사
-      expect(mockedApi.post).toHaveBeenCalledWith('/auth/sign-up', {
+      expect(mockedApi.post).toHaveBeenCalledWith('/auth/signup', {
         email: 'test@example.com',
         password: 'Abc123!@#',
         confirmPassword: 'Abc123!@#',  // form state에 confirmPassword도 포함돼 있을 경우
