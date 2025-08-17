@@ -18,10 +18,20 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
     languages: [] as Language[],
   })
   const [error, setError] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
+    setForm(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'confirmPassword' || name === 'password') {
+      const newForm = { ...form, [name]: value };
+      if (newForm.confirmPassword && newForm.password !== newForm.confirmPassword) {
+        setConfirmPasswordError('Passwords do not match.');
+      } else {
+        setConfirmPasswordError('');
+      }
+    }
   }
 
   const handleLanguageToggle = (lang: Language) => {
@@ -98,6 +108,7 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
       </label>
      <label className={styles.inputGroup}>
       <span>Confirm Password: </span>
+      <div className={styles.inlineInputWrapper}>
       <input
         name="confirmPassword"
         type="password"
@@ -106,6 +117,10 @@ export default function SignUpForm({ onSuccess }: SignUpFormProps) {
         placeholder="Confirm Password"
         required
       />
+      {confirmPasswordError && (
+        <p className={styles.errorText}>{confirmPasswordError}</p>
+      )}
+      </div>
       </label>
       <label className={styles.inputGroup}>
       <span>Nickname: </span>
